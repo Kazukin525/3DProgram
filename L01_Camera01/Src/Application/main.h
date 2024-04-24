@@ -58,6 +58,9 @@ private:
 	// ポリゴンデータ
 	std::shared_ptr<KdSquarePolygon> m_spPoly = nullptr;
 
+	// 地面データ
+	std::shared_ptr<KdModelData> m_spModel = nullptr;
+
 //=====================================================
 // シングルトンパターン
 //=====================================================
