@@ -64,35 +64,75 @@ void Application::PreUpdate()
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 void Application::Update()
 {
+
 	if (GetAsyncKeyState(VK_UP) & 0x8000) { m_zPos += 0.1f; }
 	if (GetAsyncKeyState(VK_DOWN) & 0x8000) { m_zPos -= 0.1f; }
 	
 	// カメラ行列の更新
 	{
+		// 動くカメラ->トラッキングカメラ
+		// 動かないカメラ->定点カメラ
+
 		// 大きさ
 		Math::Matrix _mScale =
 			Math::Matrix::CreateScale(1, 1, 1);
 		 
-		// 基準点（ターゲット）からどれだけ離れているか
-		Math::Matrix _mlocalPos =
-			Math::Matrix::CreateTranslation(0, 6, m_zPos);
-			//Math::Matrix::CreateTranslation(0, 6, 0);
-
 		// どれだけ傾けているか
-		Math::Matrix _mRotation =
+		Math::Matrix _mRotationX =
 			Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(45));
 
+		// 基準点（ターゲット）からどれだけ離れているか
+		Math::Matrix _mTrans =
+			Math::Matrix::CreateTranslation(0, 6, -5);
+			//Math::Matrix::CreateTranslation(0, 6, -5);
+			//Math::Matrix::Identity;
+		//Math::Matrix::CreateTranslation(0, 6, 0);
+
+		static float r = 0.0f;
+		r++;
+		Math::Matrix _mRotateY =
+			Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(r));
 		
 		// 必ずこの順番で掛ける
 		//Worldmat = Scale * Rotation * Translation
 
 		// カメラのワールド行列を作成、適応させる
 		Math::Matrix _mWorld =		//　ワールド行列
-			_mScale * _mRotation * _mlocalPos;
-			//_mlocalPos * _mScale * _mRotation;
+			//_mScale * _mRotation * _mTrans;
+			_mScale *_mRotationX *_mTrans * _mRotateY  ;
 			//_mlocalPos * _mRotation;
 		m_spCamera->SetCameraMatrix(_mWorld);
 	}
+
+	// ハム太郎更新
+	{
+		float			moveSpd = 0.05f;
+		Math::Vector3	nowPos  = m_mHamuWorld.Translation();
+
+		Math::Vector3	moveVec  = Math::Vector3::Zero;
+
+		if (GetAsyncKeyState('W') & 0x8000)
+		{
+			moveVec.z =  0.5f;
+		}
+		if (GetAsyncKeyState('A') & 0x8000)
+		{
+			moveVec.x = -0.5f;
+		}
+		if (GetAsyncKeyState('S') & 0x8000)
+		{
+			moveVec.z = -0.5f;
+		}
+		if (GetAsyncKeyState('D') & 0x8000)
+		{
+			moveVec.x =  0.5f;
+		}
+
+		moveVec *= moveSpd;
+		nowPos += moveVec;
+		// キャラクターのワールド行列を作成
+		m_mHamuWorld = Math::Matrix::CreateTranslation(nowPos);
+	};
 }
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -149,8 +189,8 @@ void Application::Draw()
 	// 陰影のあるオブジェクト(不透明な物体や2Dキャラ)はBeginとEndの間にまとめてDrawする
 	KdShaderManager::Instance().m_StandardShader.BeginLit();
 	{
-		Math::Matrix _mat = Math::Matrix::CreateTranslation(0, 0, m_zPos);
-		KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_spPoly,_mat);
+		//Math::Matrix _mat = Math::Matrix::CreateTranslation(0, 0, m_zPos);
+		KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_spPoly, m_mHamuWorld);
 		KdShaderManager::Instance().m_StandardShader.DrawModel(*m_spModel);
 	}
 	KdShaderManager::Instance().m_StandardShader.EndLit();
