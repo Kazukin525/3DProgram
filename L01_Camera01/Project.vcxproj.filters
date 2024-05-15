@@ -180,6 +180,7 @@
     <ClInclude Include="Src\Framework\Effekseer\KdEffekseerManager.h">
       <Filter>Src\Framework\Effekseer</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\HamuHamu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -284,6 +285,7 @@
     <ClCompile Include="Src\Framework\Effekseer\KdEffekseerManager.cpp">
       <Filter>Src\Framework\Effekseer</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Application\HamuHamu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Framework\Shader\inc_KdCommon.hlsli">

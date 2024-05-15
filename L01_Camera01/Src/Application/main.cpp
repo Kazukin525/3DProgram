@@ -89,7 +89,7 @@ void Application::Update()
 		//Math::Matrix::CreateTranslation(0, 6, 0);
 
 		static float r = 0.0f;
-		r++;
+		//r++;
 		Math::Matrix _mRotateY =
 			Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(r));
 		
@@ -99,7 +99,8 @@ void Application::Update()
 		// カメラのワールド行列を作成、適応させる
 		Math::Matrix _mWorld =		//　ワールド行列
 			//_mScale * _mRotation * _mTrans;
-			_mScale *_mRotationX *_mTrans * _mRotateY  ;
+			// 自身のワールド行列を作成、適応させる（行列の親子関係）
+			_mScale *_mRotationX *_mTrans * _mRotateY * m_mHamuWorld  ;
 			//_mlocalPos * _mRotation;
 		m_spCamera->SetCameraMatrix(_mWorld);
 	}
@@ -109,7 +110,13 @@ void Application::Update()
 		float			moveSpd = 0.05f;
 		Math::Vector3	nowPos  = m_mHamuWorld.Translation();
 
+		// ベクトル(方向ベクトル) = 必ず「長さ（力）」が1でなければならない
+
+		// ベクトルとは、矢印である
 		Math::Vector3	moveVec  = Math::Vector3::Zero;
+
+		//float len = moveVec.Length();	 // ベクトルの長さを返す
+		//moveVec.Normalize();			 // ベクトルの長さを1にしてくれる関数
 
 		if (GetAsyncKeyState('W') & 0x8000)
 		{
@@ -128,6 +135,7 @@ void Application::Update()
 			moveVec.x =  0.5f;
 		}
 
+		moveVec.Normalize();
 		moveVec *= moveSpd;
 		nowPos += moveVec;
 		// キャラクターのワールド行列を作成

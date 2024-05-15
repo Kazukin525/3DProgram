@@ -52,7 +52,6 @@ private:
 	bool		m_endFlag = false;
 
 	// カメラ
-	std::shared_ptr<KdCamera> m_spCamera = nullptr;
 	float m_zPos = 5.0f;
 
 	// ポリゴンデータ
