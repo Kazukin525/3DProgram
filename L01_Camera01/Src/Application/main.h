@@ -52,14 +52,15 @@ private:
 	bool		m_endFlag = false;
 
 	// カメラ
+	std::shared_ptr<KdCamera>m_spCamera;
 	float m_zPos = 5.0f;
 
-	// ポリゴンデータ
-	std::shared_ptr<KdSquarePolygon> m_spPoly = nullptr;
-	Math::Matrix m_mHamuWorld = Math::Matrix::Identity;
+	//// ポリゴンデータ
+	//std::shared_ptr<KdSquarePolygon> m_spPoly = nullptr;
+	//Math::Matrix m_mHamuWorld = Math::Matrix::Identity;
 
-	// 地面データ
-	std::shared_ptr<KdModelData> m_spModel = nullptr;
+	// ゲームオブジェクトリスト
+	std::vector<std::shared_ptr<KdGameObject>> m_GameObjList;
 
 //=====================================================
 // シングルトンパターン
