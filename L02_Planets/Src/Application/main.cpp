@@ -1,5 +1,9 @@
 ﻿#include "main.h"
 
+#include "Object/Earth/Earth.h"
+#include "Object/Moon/Moon.h"
+#include "Object/Sun/Sun.h"
+
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 // エントリーポイント
 // アプリケーションはこの関数から進行する
@@ -64,6 +68,19 @@ void Application::PreUpdate()
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 void Application::Update()
 {
+	// カメラ 更新
+	{
+		Math::Matrix  transMat = Math::Matrix::Identity;
+		Math::Vector3 pos = { 0.0f,0.0f,-10.0f };
+		transMat = Math::Matrix::CreateTranslation(pos);
+		m_spCamera->SetCameraMatrix(transMat);
+	}
+	
+	// オブジェクト更新
+	for (auto& obj : m_planetsList)
+	{
+		obj->Update();
+	}
 }
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -120,6 +137,10 @@ void Application::Draw()
 	// 陰影のあるオブジェクト(不透明な物体や2Dキャラ)はBeginとEndの間にまとめてDrawする
 	KdShaderManager::Instance().m_StandardShader.BeginLit();
 	{
+		for (auto& obj : m_planetsList)
+		{
+			obj->DrawLit();
+		}
 	}
 	KdShaderManager::Instance().m_StandardShader.EndLit();
 
@@ -179,9 +200,9 @@ bool Application::Init(int w, int h)
 	// フルスクリーン確認
 	//===================================================================
 	bool bFullScreen = false;
-	if (MessageBoxA(m_window.GetWndHandle(), "フルスクリーンにしますか？", "確認", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES) {
+	/*if (MessageBoxA(m_window.GetWndHandle(), "フルスクリーンにしますか？", "確認", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES) {
 		bFullScreen = true;
-	}
+	}*/
 
 	//===================================================================
 	// Direct3D初期化
@@ -226,6 +247,21 @@ bool Application::Init(int w, int h)
 	// カメラ初期化
 	//===================================================================
 	m_spCamera	= std::make_shared<KdCamera>();
+
+	//===================================================================
+	// オブジェクト初期化
+	//===================================================================
+	std::shared_ptr<Earth> earth = std::make_shared<Earth>();
+	earth->Init();
+	m_planetsList.push_back(earth);
+	
+	std::shared_ptr<Moon> moon = std::make_shared<Moon>();
+	moon->Init();
+	m_planetsList.push_back(moon);
+	
+	std::shared_ptr<Sun> sun = std::make_shared<Sun>();
+	sun->Init();
+	m_planetsList.push_back(sun);
 
 	return true;
 }

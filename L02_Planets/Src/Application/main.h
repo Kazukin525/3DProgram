@@ -1,4 +1,5 @@
 ﻿#pragma once
+class BasePlanets;
 
 //============================================================
 // アプリケーションクラス
@@ -20,6 +21,9 @@ public:
 
 	int GetNowFPS() const { return m_fpsController.m_nowfps; }
 	int GetMaxFPS() const { return m_fpsController.m_maxFps; }
+
+	// オブジェクトリストの取得
+	std::vector<std::shared_ptr<BasePlanets>> GetObjList() { return m_planetsList; };
 
 private:
 
@@ -51,7 +55,10 @@ private:
 	// ゲーム終了フラグ trueで終了する
 	bool		m_endFlag = false;
 
-	std::shared_ptr<KdCamera>			m_spCamera		= nullptr;
+	std::shared_ptr<KdCamera>	m_spCamera		= nullptr;
+
+	// オブジェクトのリスト
+	std::vector<std::shared_ptr<BasePlanets>> m_planetsList;
 
 //=====================================================
 // シングルトンパターン

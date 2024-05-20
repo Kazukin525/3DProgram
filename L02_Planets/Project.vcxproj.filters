@@ -55,6 +55,18 @@
     <Filter Include="Src\Framework\Effekseer">
       <UniqueIdentifier>{c81b93e4-2f33-496a-985e-98658f1cec51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object">
+      <UniqueIdentifier>{4ac326a7-a2eb-456e-9964-7f01fabc0138}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Moon">
+      <UniqueIdentifier>{61734671-4035-40ae-9bc6-0959bf0c7ae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Sun">
+      <UniqueIdentifier>{a4c43b64-7a7c-4522-9f27-738873dc142e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Earth">
+      <UniqueIdentifier>{82a33881-9406-4466-9c98-dba24307ad45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -180,6 +192,17 @@
     <ClInclude Include="Src\Framework\Effekseer\KdEffekseerManager.h">
       <Filter>Src\Framework\Effekseer</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Object\Planets\BasePlanets\BasePlanets.h" />
+    <ClInclude Include="Src\Application\Object\Earth\Earth.h">
+      <Filter>Src\Application\Object\Earth</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Moon\Moon.h">
+      <Filter>Src\Application\Object\Moon</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\Sun\Sun.h">
+      <Filter>Src\Application\Object\Sun</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\BasePlanets.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -284,6 +307,16 @@
     <ClCompile Include="Src\Framework\Effekseer\KdEffekseerManager.cpp">
       <Filter>Src\Framework\Effekseer</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Application\Object\Earth\Earth.cpp">
+      <Filter>Src\Application\Object\Earth</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Moon\Moon.cpp">
+      <Filter>Src\Application\Object\Moon</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Sun\Sun.cpp">
+      <Filter>Src\Application\Object\Sun</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\BasePlanets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Framework\Shader\inc_KdCommon.hlsli">
