@@ -13,7 +13,7 @@ Earth::~Earth()
 
 void Earth::Update()
 {
-	m_dig += 0.1f;
+	m_dig += 0.3f;
 	if (m_dig >= 360) { m_dig -= 360; }
 
 	Math::Matrix rotMat, transMat;
@@ -21,11 +21,6 @@ void Earth::Update()
 	transMat = Math::Matrix::CreateTranslation(m_pos);
 
 	m_mWorld = rotMat * transMat * rotMat;
-}
-
-void Earth::DrawLit()
-{
-	KdShaderManager::Instance().m_StandardShader.DrawModel(m_model, m_mWorld);
 }
 
 void Earth::Init()

@@ -150,7 +150,6 @@
     <ClInclude Include="Src\Application\Object\BasePlanets.h" />
     <ClInclude Include="Src\Application\Object\Earth\Earth.h" />
     <ClInclude Include="Src\Application\Object\Moon\Moon.h" />
-    <ClInclude Include="Src\Application\Object\Planets\BasePlanets\BasePlanets.h" />
     <ClInclude Include="Src\Application\Object\Sun\Sun.h" />
     <ClInclude Include="Src\Framework\Direct3D\KdMaterial.h" />
     <ClInclude Include="Src\Framework\Direct3D\Polygon\KdPolygon.h" />

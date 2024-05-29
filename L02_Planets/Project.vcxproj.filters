@@ -67,6 +67,9 @@
     <Filter Include="Src\Application\Object\Earth">
       <UniqueIdentifier>{82a33881-9406-4466-9c98-dba24307ad45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object\BasePlanets">
+      <UniqueIdentifier>{fc4cb905-11a1-4f73-8805-fb88770bc715}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -192,7 +195,6 @@
     <ClInclude Include="Src\Framework\Effekseer\KdEffekseerManager.h">
       <Filter>Src\Framework\Effekseer</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\Planets\BasePlanets\BasePlanets.h" />
     <ClInclude Include="Src\Application\Object\Earth\Earth.h">
       <Filter>Src\Application\Object\Earth</Filter>
     </ClInclude>
@@ -202,7 +204,9 @@
     <ClInclude Include="Src\Application\Object\Sun\Sun.h">
       <Filter>Src\Application\Object\Sun</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\BasePlanets.h" />
+    <ClInclude Include="Src\Application\Object\BasePlanets.h">
+      <Filter>Src\Application\Object\BasePlanets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -316,7 +320,9 @@
     <ClCompile Include="Src\Application\Object\Sun\Sun.cpp">
       <Filter>Src\Application\Object\Sun</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\BasePlanets.cpp" />
+    <ClCompile Include="Src\Application\Object\BasePlanets.cpp">
+      <Filter>Src\Application\Object\BasePlanets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Framework\Shader\inc_KdCommon.hlsli">

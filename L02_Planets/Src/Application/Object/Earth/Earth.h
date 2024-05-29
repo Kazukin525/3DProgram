@@ -7,7 +7,6 @@ public:
 	~Earth()	override;
 
 	void Update() override;
-	void DrawLit()override;
 	void Init()	  override;
 private:
 };

@@ -12,7 +12,7 @@ public:
 	virtual ~BasePlanets() override;
 
 	virtual void Update()override;
-	virtual void DrawLit()override;
+	void		 DrawLit()override;
 	virtual void Init()override;
 
 	PlanetsType GetPlatType() { return m_type; }

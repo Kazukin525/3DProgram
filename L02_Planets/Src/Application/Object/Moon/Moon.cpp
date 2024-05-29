@@ -13,7 +13,7 @@ void Moon::Update()
 {
 	// 角度更新
 	{
-		m_dig += 0.3f;
+		m_dig += 0.5f;
 		if (m_dig >= 360) { m_dig -= 360; }
 	}
 	// 行列更新
@@ -30,11 +30,6 @@ void Moon::Update()
 			}
 		}
 	}
-}
-
-void Moon::DrawLit()
-{
-	KdShaderManager::Instance().m_StandardShader.DrawModel(m_model, m_mWorld);
 }
 
 void Moon::Init()

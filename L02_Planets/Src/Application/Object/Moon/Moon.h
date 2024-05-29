@@ -7,7 +7,6 @@ public:
 	~Moon()	override;
 
 	void Update() override;
-	void DrawLit()override;
 	void Init()	  override;
 private:
 };
