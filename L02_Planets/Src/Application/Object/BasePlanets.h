@@ -20,5 +20,5 @@ protected:
 	PlanetsType m_type;
 	KdModelData m_model;
 	Math::Vector3 m_pos;
-	float m_dig = 0.0f;
+	float m_deg = 0.0f;
 };
