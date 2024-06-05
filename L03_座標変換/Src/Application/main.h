@@ -21,6 +21,9 @@ public:
 	int GetNowFPS() const { return m_fpsController.m_nowfps; }
 	int GetMaxFPS() const { return m_fpsController.m_maxFps; }
 
+	std::shared_ptr<KdCamera> GetCamera() { return m_spCamera; }
+	
+
 private:
 
 	void KdBeginUpdate();

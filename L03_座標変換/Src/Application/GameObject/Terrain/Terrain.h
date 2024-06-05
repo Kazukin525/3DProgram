@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 class Terrain : public KdGameObject
 {
@@ -12,5 +12,4 @@ public:
 
 private:
 	std::shared_ptr<KdModelWork> m_spModel = nullptr;
-
 };

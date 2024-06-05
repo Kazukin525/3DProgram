@@ -271,6 +271,8 @@ bool Application::Init(int w, int h)
 	//===================================================================
 	std::shared_ptr<Character> _character = std::make_shared<Character>();
 	_character->Init();
+	_character->SetCamera(m_spCamera);
+	_character->SetTerrain(_terrain);
 	m_GameObjectList.push_back(_character);
 
 	return true;
