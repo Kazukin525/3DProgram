@@ -22,27 +22,24 @@ void Character::Init()
 void Character::Update()
 {
 	// キャラクターの移動速度(真似しちゃダメですよ)
-	float moveSpd = 0.05f;
-	Math::Vector3 nowPos = m_mWorld.Translation();
-
-	Math::Vector3 moveVec = Math::Vector3::Zero;
-	if (GetAsyncKeyState('D')) { moveVec.x = 1.0f; }
-	if (GetAsyncKeyState('A')) { moveVec.x = -1.0f; }
-	if (GetAsyncKeyState('W')) { moveVec.z = 1.0f; }
-	if (GetAsyncKeyState('S')) { moveVec.z = -1.0f; }
+	Math::Vector3 nowPos = GetPos();
 	
 	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)
 	{
 		// 2D座標を3D座標に(クリックした座標に配置)
+		
+		POINT mouse;
+		// マウス座標を補正
 		{
-			POINT mouse;
-			// マウス座標を補正
-			{
-				GetCursorPos(&mouse);
-				ScreenToClient(Application::Instance().GetWindowHandle(), &mouse);
-			}
+			// カーソル座標を持ってきただけ
+			GetCursorPos(&mouse);
+			// クライアントの画面座標に環境を適応させる
+			ScreenToClient(Application::Instance().GetWindowHandle(), &mouse);
+		}
 
-			// レイ情報
+		// レイ情報
+		if (!m_wpTerrain.expired() || !m_wpCamera.expired())
+		{
 			KdCollider::RayInfo rayInfo;
 			m_wpCamera.lock()->GenerateRayInfoFromClientPos(mouse, rayInfo.m_pos, rayInfo.m_dir, rayInfo.m_range);
 
@@ -54,7 +51,6 @@ void Character::Update()
 			m_wpTerrain.lock()->Intersects(rayInfo, &retRayList);
 
 			// レイリストから一番近いオブジェクトを検出
-
 			float maxOverLap = 0;	// はみ出たレイの長さ
 			Math::Vector3 hitPos;	// レイが遮断された座標（当たった座標）
 			bool isHit = false;		// 当たっていたらtrue
@@ -72,10 +68,26 @@ void Character::Update()
 			}
 			if (isHit) // 当たっている場合
 			{
-				nowPos = hitPos;
+				m_TargetPos = hitPos;
 			}
 		}
+		
 	}
+
+	Math::Vector3 moveVec = m_TargetPos - nowPos;
+	float moveSpd = 0.05f;
+
+
+	//if (moveVec.Length() <= 0.1f) { moveVec = {}; }
+
+	// 先生の補正
+	// length（）を使いすぎると処理負荷がかかる
+
+	//moveVec.LengthSquared();	 ベクトルの長さが0かどうか調べるもの
+	
+	if (moveVec.Length() < moveSpd) { moveSpd = moveVec.Length(); }
+
+	
 	moveVec.Normalize();
 	moveVec *= moveSpd;
 	nowPos	+= moveVec;

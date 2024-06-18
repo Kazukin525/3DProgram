@@ -13,7 +13,7 @@ public:
 	void DrawSprite()		override;
 
 	void SetCamera(std::shared_ptr<KdCamera> _camera)  { m_wpCamera  = _camera; }
-	void SetTerrain(std::shared_ptr<Terrain> _terrain) { m_wpTerrain = _terrain; }
+	void SetTerrain(std::shared_ptr<KdGameObject> _terrain) { m_wpTerrain = _terrain; }
 
 private:
 	std::shared_ptr<KdSquarePolygon>	m_spPoly = nullptr;
@@ -22,7 +22,9 @@ private:
 
 	std::weak_ptr<KdCamera>				m_wpCamera;
 
-	std::weak_ptr<Terrain>				m_wpTerrain;
+	std::weak_ptr<KdGameObject>			m_wpTerrain;
 
 	Math::Vector3						m_circlePos;
+
+	Math::Vector3						m_TargetPos;
 };
