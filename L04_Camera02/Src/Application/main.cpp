@@ -2,6 +2,8 @@
 
 #include "GameObject/Terrain/Terrain.h"
 #include "GameObject/Character/Character.h"
+
+#include "GameObject/Camera/TrackingCamera/TrackingCamera.h"
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 // エントリーポイント
 // アプリケーションはこの関数から進行する
@@ -244,6 +246,9 @@ bool Application::Init(int w, int h)
 	//===================================================================
 	// カメラ初期化
 	//===================================================================
+	std::shared_ptr<TrackingCamera> _camera = std::make_shared<TrackingCamera>();
+	_camera->Init();
+	m_GameObjectList.push_back(_camera);
 
 	//===================================================================
 	// ステージ初期化
@@ -257,6 +262,7 @@ bool Application::Init(int w, int h)
 	//===================================================================
 	std::shared_ptr<Character> _character = std::make_shared<Character>();
 	_character->Init();
+	_camera->SetTarget(_character);
 	m_GameObjectList.push_back(_character);
 
 	return true;
