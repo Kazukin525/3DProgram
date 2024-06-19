@@ -70,6 +70,9 @@
     <Filter Include="Src\Application\GameObject\Camera\TrackingCamera">
       <UniqueIdentifier>{7ba6a935-5d2d-4f65-a72c-3b6eeb5cfdc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\GameObject\Camera\FPScamera">
+      <UniqueIdentifier>{02672f6e-3337-49b9-9448-b4121e1985df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -207,6 +210,9 @@
     <ClInclude Include="Src\Application\GameObject\Camera\TrackingCamera\TrackingCamera.h">
       <Filter>Src\Application\GameObject\Camera\TrackingCamera</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\GameObject\Camera\FPSCamera\FPSCamera.h">
+      <Filter>Src\Application\GameObject\Camera\FPScamera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -322,6 +328,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\GameObject\Camera\TrackingCamera\TrackingCamera.cpp">
       <Filter>Src\Application\GameObject\Camera\TrackingCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\GameObject\Camera\FPSCamera\FPSCamera.cpp">
+      <Filter>Src\Application\GameObject\Camera\FPScamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

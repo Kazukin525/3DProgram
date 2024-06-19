@@ -1,4 +1,7 @@
-﻿#include "Character.h"
+﻿#include "../Camera/CameraBase.h"
+
+#include "Character.h"
+
 #include "../../main.h"
 
 void Character::Init()
@@ -22,9 +25,23 @@ void Character::Update()
 	if (GetAsyncKeyState('A')) { moveVec.x = -1.0f; }
 	if (GetAsyncKeyState('W')) { moveVec.z = 1.0f; }
 	if (GetAsyncKeyState('S')) { moveVec.z = -1.0f; }
+
+	if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+	{
+		moveSpd = 0.1f;
+	}
+	else { moveSpd = 0.05f; }
+
+	const std::shared_ptr<CameraBase> _spCamera = m_wpCamera.lock();
+	if (_spCamera)
+	{
+		moveVec =
+			moveVec.TransformNormal(moveVec,_spCamera->GetRotationYMatrix());
+	}
+
 	moveVec.Normalize();
 	moveVec *= moveSpd;
-	nowPos += moveVec;
+	nowPos	+= moveVec;
 
 	// キャラクターのワールド行列を創る処理
 	m_mWorld = Math::Matrix::CreateTranslation(nowPos);
