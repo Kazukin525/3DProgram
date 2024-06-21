@@ -1,4 +1,6 @@
 ﻿#pragma once
+
+class Terrain;
 class CameraBase : public KdGameObject
 {
 public:
@@ -12,7 +14,7 @@ public:
 	void PreDraw()			override;
 
 	void SetTarget(const std::shared_ptr<KdGameObject>& target) { m_wpTarget = target; }
-
+	
 	const Math::Matrix GetRotationMatrix() const
 	{
 		// 各軸の回転行列を作成してくれる優れモノ

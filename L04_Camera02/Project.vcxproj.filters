@@ -70,8 +70,11 @@
     <Filter Include="Src\Application\GameObject\Camera\TrackingCamera">
       <UniqueIdentifier>{7ba6a935-5d2d-4f65-a72c-3b6eeb5cfdc9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\GameObject\Camera\FPScamera">
+    <Filter Include="Src\Application\GameObject\Camera\FPSCamera">
       <UniqueIdentifier>{02672f6e-3337-49b9-9448-b4121e1985df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\GameObject\Camera\TPSCamera">
+      <UniqueIdentifier>{d8ebe07f-2583-494c-bb0b-e5c1fc9826a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -211,7 +214,10 @@
       <Filter>Src\Application\GameObject\Camera\TrackingCamera</Filter>
     </ClInclude>
     <ClInclude Include="Src\Application\GameObject\Camera\FPSCamera\FPSCamera.h">
-      <Filter>Src\Application\GameObject\Camera\FPScamera</Filter>
+      <Filter>Src\Application\GameObject\Camera\FPSCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\GameObject\Camera\TPSCamera\TPSCamera.h">
+      <Filter>Src\Application\GameObject\Camera\TPSCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -330,7 +336,10 @@
       <Filter>Src\Application\GameObject\Camera\TrackingCamera</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\GameObject\Camera\FPSCamera\FPSCamera.cpp">
-      <Filter>Src\Application\GameObject\Camera\FPScamera</Filter>
+      <Filter>Src\Application\GameObject\Camera\FPSCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\GameObject\Camera\TPSCamera\TPSCamera.cpp">
+      <Filter>Src\Application\GameObject\Camera\TPSCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

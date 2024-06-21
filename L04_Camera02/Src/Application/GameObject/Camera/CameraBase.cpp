@@ -26,7 +26,6 @@ void CameraBase::PreDraw()
 	if (!m_spCamera) { return; }
 
 	m_spCamera->SetToShader();
-
 }
 
 void CameraBase::UpdateRotateByMouse()
