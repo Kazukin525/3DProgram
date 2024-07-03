@@ -35,7 +35,7 @@ void Character::Update()
 	const std::shared_ptr<CameraBase> _spCamera = m_wpCamera.lock();
 	if (_spCamera)
 	{
-		// 
+		// 進行方向に進む(Y軸回転)
 		moveVec =
 			moveVec.TransformNormal(moveVec,_spCamera->GetRotationYMatrix());
 	}
