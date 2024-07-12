@@ -10,4 +10,6 @@ public:
 	void PostUpdate()		override;
 
 private:
+	void UpdateLookAtRotate(const Math::Vector3& targetPos);
+
 };

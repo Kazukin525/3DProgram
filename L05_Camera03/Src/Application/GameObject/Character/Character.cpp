@@ -80,6 +80,7 @@ void Character::UpdateRotate(const Math::Vector3& srcMoveVec)
 		_betweenAng += 360;
 	}
 
+	// rotateAng->回転するスピード
 	float rotateAng = std::clamp(_betweenAng, -8.0f, 8.0f);
 	m_worldRot.y += rotateAng;
 }
