@@ -5,11 +5,15 @@
 
 void Character::Init()
 {
-	if (!m_spPoly)
+	if (!m_spModel)
 	{
-		m_spPoly = std::make_shared<KdSquarePolygon>();
-		m_spPoly->SetMaterial("Asset/LessonData/Character/Hamu.png");
-		m_spPoly->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
+		m_spModel = std::make_shared<KdModelWork>();
+		m_spModel->SetModelData("Asset/Models/SkinMeshMan/SkinMeshMan.gltf");
+
+		// 初期のアニメーションをセットする
+		// 頂点数などの計算をしっかりする必要がある
+		m_spAnimetor = std::make_shared<KdAnimator>();
+		m_spAnimetor->SetAnimation(m_spModel->GetData()->GetAnimation("Walk"));
 	}
 }
 
@@ -44,13 +48,16 @@ void Character::Update()
 
 void Character::PostUpdate()
 {
+	// アニメーションの更新処理
+	m_spAnimetor->AdvanceTime(m_spModel->WorkNodes());
+	m_spModel->CalcNodeMatrices();
 }
 
 void Character::DrawLit()
 {
-	if (!m_spPoly) return;
+	if (!m_spModel) return;
 
-	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_spPoly, m_mWorld);
+	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_spModel, m_mWorld);
 }
 
 void Character::UpdateRotate(const Math::Vector3& srcMoveVec)
