@@ -38,4 +38,54 @@ private:
 	Math::Vector3								m_worldRot;
 
 	float										m_Gravity		= 0;
+	bool										m_IsGround		= false;
+
+// ステートパターン管理系！
+private:
+	
+	class ActionStateBase
+	{
+	public:
+		virtual ~ActionStateBase() {}
+
+		virtual void Enter(Character& owner) {}
+		virtual void Update(Character& owner) {}
+		virtual void Exit(Character& owner) {}
+	};
+
+	// 待機状態
+	class ActionIdle : public ActionStateBase
+	{
+	public:
+		~ActionIdle()override {}
+		
+		void Enter(Character& owner)	override;
+		void Update(Character& owner)	override;
+		void Exit(Character& owner)		override;
+	};
+	
+	// ジャンプ状態
+	class ActionJump : public ActionStateBase
+	{
+	public:
+		~ActionJump()override {}
+
+		void Enter(Character& owner)	override;
+		void Update(Character& owner)	override;
+		void Exit(Character& owner)		override;
+	};
+
+	// 歩き状態
+	class ActionWalk : public ActionStateBase
+	{
+	public:
+		~ActionWalk()override {}
+
+		void Enter(Character& owner)	override;
+		void Update(Character& owner)	override;
+		void Exit(Character& owner)		override;
+	};
+
+	void ChangeActionState(std::shared_ptr<ActionStateBase> nextState);
+	std::shared_ptr<ActionStateBase> m_nowAction = nullptr;
 };

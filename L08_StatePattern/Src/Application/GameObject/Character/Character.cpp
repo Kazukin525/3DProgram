@@ -17,6 +17,9 @@ void Character::Init()
 
 	m_Gravity = 0;
 	SetPos({ 0, 5.0f, 0 });
+
+	// 初期状態を「待機状態」へ設定
+	ChangeActionState(std::make_shared<ActionIdle>());
 }
 
 void Character::Update()
@@ -25,34 +28,42 @@ void Character::Update()
 	m_Gravity += 0.01f;
 	m_mWorld._42 -= m_Gravity;
 
-	// キャラクターの移動速度(真似しちゃダメですよ)
-	float			_moveSpd = 0.05f;
-	Math::Vector3	_nowPos	= GetPos();
-
-	Math::Vector3 _moveVec = Math::Vector3::Zero;
-	if (GetAsyncKeyState('D')) { _moveVec.x =  1.0f; }
-	if (GetAsyncKeyState('A')) { _moveVec.x = -1.0f; }
-	if (GetAsyncKeyState('W')) { _moveVec.z =  1.0f; }
-	if (GetAsyncKeyState('S')) { _moveVec.z = -1.0f; }
-
-	const std::shared_ptr<const CameraBase> _spCamera = m_wpCamera.lock();
-	if (_spCamera)
+	// 各種「状態」に応じた更新処理を実行する
+	if (m_nowAction)
 	{
-		_moveVec = _moveVec.TransformNormal(_moveVec, _spCamera->GetRotationYMatrix());
+		m_nowAction->Update(*this);
 	}
-	_moveVec.Normalize();
-	_moveVec *= _moveSpd;
-	_nowPos += _moveVec;
-
-	// キャラクターの回転行列を創る
-	UpdateRotate(_moveVec);
-
-	// キャラクターのワールド行列を創る処理
-	Math::Matrix _rotation = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_worldRot.y));
-	m_mWorld = _rotation * Math::Matrix::CreateTranslation(_nowPos);
 
 	// キャラクターの座標が確定してからコリジョンによる位置補正を行う
 	UpdateCollision();
+
+	//// キャラクターの移動速度(真似しちゃダメですよ)
+	//float			_moveSpd = 0.05f;
+	//Math::Vector3	_nowPos	= GetPos();
+
+	//Math::Vector3 _moveVec = Math::Vector3::Zero;
+	//if (GetAsyncKeyState('D')) { _moveVec.x =  1.0f; }
+	//if (GetAsyncKeyState('A')) { _moveVec.x = -1.0f; }
+	//if (GetAsyncKeyState('W')) { _moveVec.z =  1.0f; }
+	//if (GetAsyncKeyState('S')) { _moveVec.z = -1.0f; }
+
+	//if (GetAsyncKeyState(VK_SPACE)) { m_Gravity = -0.1f; }
+
+	//const std::shared_ptr<const CameraBase> _spCamera = m_wpCamera.lock();
+	//if (_spCamera)
+	//{
+	//	_moveVec = _moveVec.TransformNormal(_moveVec, _spCamera->GetRotationYMatrix());
+	//}
+	//_moveVec.Normalize();
+	//_moveVec *= _moveSpd;
+	//_nowPos += _moveVec;
+
+	//// キャラクターの回転行列を創る
+	//UpdateRotate(_moveVec);
+
+	// キャラクターのワールド行列を創る処理
+	//Math::Matrix _rotation = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_worldRot.y));
+	//m_mWorld = _rotation * Math::Matrix::CreateTranslation(m_mWorld.Translation());
 }
 
 void Character::PostUpdate()
@@ -160,7 +171,12 @@ void Character::UpdateCollision()
 			if (hit)
 			{
 				SetPos(hitPos);
+				m_IsGround = true;
 				m_Gravity = 0;
+			}
+			else
+			{
+				m_IsGround = false;
 			}
 		}
 	}
@@ -190,4 +206,114 @@ void Character::UpdateCollision()
 			}
 		}
 	}
+}
+
+// こっからステートパターン関係
+void Character::ChangeActionState(std::shared_ptr<ActionStateBase> nextState)
+{
+	if (m_nowAction)m_nowAction->Exit(*this);
+	m_nowAction = nextState;
+	m_nowAction->Enter(*this);
+}
+
+// 待機状態
+void Character::ActionIdle::Enter(Character &owner)
+{
+	owner.m_spAnimator->SetAnimation
+	(owner.m_spModel->GetData()->GetAnimation("Stand"));
+}
+
+void Character::ActionIdle::Update(Character& owner)
+{
+	Math::Vector3 _moveVec;
+	if (GetAsyncKeyState('D')) { _moveVec.x = 1.0f; }
+	if (GetAsyncKeyState('A')) { _moveVec.x = -1.0f; }
+	if (GetAsyncKeyState('W')) { _moveVec.z = 1.0f; }
+	if (GetAsyncKeyState('S')) { _moveVec.z = -1.0f; }
+
+	if (_moveVec.LengthSquared() > 0)
+	{
+		owner.ChangeActionState(std::make_shared<ActionWalk>());
+		return;
+	}
+	
+	else if (GetAsyncKeyState(VK_SPACE) & 0x8000 && owner.m_IsGround)
+	{
+		owner.ChangeActionState(std::make_shared<ActionJump>());
+		return;
+	}
+}
+
+void Character::ActionIdle::Exit(Character& owner)
+{
+
+}
+
+
+// ジャンプ状態
+void Character::ActionJump::Enter(Character& owner)
+{
+	owner.m_Gravity -= 0.1f;
+}
+
+void Character::ActionJump::Update(Character& owner)
+{
+	if (owner.m_IsGround)
+	{
+		owner.ChangeActionState(std::make_shared<ActionIdle>());
+	}
+}
+
+void Character::ActionJump::Exit(Character& owner)
+{
+	
+}
+
+// 歩き状態
+void Character::ActionWalk::Enter(Character& owner)
+{
+	owner.m_spAnimator->SetAnimation
+	(owner.m_spModel->GetData()->GetAnimation("Walk"));
+}
+
+void Character::ActionWalk::Update(Character& owner)
+{
+	// キャラクターの移動速度(真似しちゃダメですよ)
+	float			_moveSpd = 0.05f;
+	Math::Vector3	_nowPos	= owner.GetPos();
+
+	Math::Vector3 _moveVec = Math::Vector3::Zero;
+	if (GetAsyncKeyState('D')) { _moveVec.x =  1.0f; }
+	if (GetAsyncKeyState('A')) { _moveVec.x = -1.0f; }
+	if (GetAsyncKeyState('W')) { _moveVec.z =  1.0f; }
+	if (GetAsyncKeyState('S')) { _moveVec.z = -1.0f; }
+
+	if (_moveVec.LengthSquared() < 1)
+	{
+		owner.ChangeActionState(std::make_shared<ActionIdle>());
+		return;
+	}
+
+	const std::shared_ptr<const CameraBase> _spCamera = owner.m_wpCamera.lock();
+	if (_spCamera)
+	{
+		_moveVec = _moveVec.TransformNormal(_moveVec, _spCamera->GetRotationYMatrix());
+	}
+	
+	// キャラクターの回転行列を創る
+	owner.UpdateRotate(_moveVec);
+
+	_moveVec.Normalize();
+	_moveVec *= _moveSpd;
+	_nowPos += _moveVec;
+
+	//owner.SetPos(_nowPos);
+
+	Math::Matrix	_rotation = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(owner.m_worldRot.y));
+	owner.m_mWorld = _rotation * Math::Matrix::CreateTranslation(_nowPos);
+}
+
+void Character::ActionWalk::Exit(Character& owner)
+{
+
 }
