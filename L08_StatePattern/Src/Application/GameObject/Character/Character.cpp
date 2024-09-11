@@ -288,7 +288,7 @@ void Character::ActionWalk::Update(Character& owner)
 	if (GetAsyncKeyState('W')) { _moveVec.z =  1.0f; }
 	if (GetAsyncKeyState('S')) { _moveVec.z = -1.0f; }
 
-	if (_moveVec.LengthSquared() < 1)
+	if (_moveVec.LengthSquared() <= 0)
 	{
 		owner.ChangeActionState(std::make_shared<ActionIdle>());
 		return;
