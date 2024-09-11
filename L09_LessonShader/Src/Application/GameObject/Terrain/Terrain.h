@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 class Terrain : public KdGameObject
 {
@@ -8,7 +8,7 @@ public:
 
 	void Init()				override;
 	void Update()			override;
-	void DrawLit()			override;
+	void DrawLesson()			override;
 
 private:
 	std::shared_ptr<KdModelWork> m_spModel = nullptr;

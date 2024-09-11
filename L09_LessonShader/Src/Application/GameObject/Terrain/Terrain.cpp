@@ -16,10 +16,11 @@ void Terrain::Update()
 {
 }
 
-void Terrain::DrawLit()
+void Terrain::DrawLesson()
 {
 	if (!m_spModel) return;
 
-	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_spModel);
+	// 授業用シェーダ
+	KdShaderManager::Instance().m_LessonShader.DrawModel(*m_spModel->GetData());
 }
 

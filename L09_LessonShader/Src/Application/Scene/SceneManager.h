@@ -20,6 +20,7 @@ public :
 	void PreDraw();
 	void Draw();
 	void DrawSprite();
+	void DrawLesson();	// 授業用シェーダ
 	void DrawDebug();
 
 	// 次のシーンをセット (次のフレームから切り替わる)

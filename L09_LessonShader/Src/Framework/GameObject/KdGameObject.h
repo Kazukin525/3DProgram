@@ -32,6 +32,7 @@ public:
 	virtual void DrawUnLit() {}
 	virtual void DrawBright() {}
 	virtual void DrawSprite() {}
+	virtual void DrawLesson() {}	// 授業用シェーダ
 
 	virtual void DrawDebug();
 

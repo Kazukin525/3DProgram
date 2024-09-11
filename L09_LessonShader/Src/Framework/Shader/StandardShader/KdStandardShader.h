@@ -244,6 +244,7 @@ private:
 	std::shared_ptr<KdTexture>	m_dissolveTex = nullptr;	// ディゾルブで使用するデフォルトテクスチャ
 
 	// 定数バッファ
+	// コンスタントバッファ
 	KdConstantBuffer<cbObject>		m_cb0_Obj;				// オブジェクト単位で更新
 	KdConstantBuffer<cbMesh>		m_cb1_Mesh;				// メッシュ毎に更新
 	KdConstantBuffer<cbMaterial>	m_cb2_Material;			// マテリアル毎に更新

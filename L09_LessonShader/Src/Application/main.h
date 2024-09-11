@@ -146,6 +146,7 @@ private:
 	void Draw();
 	void PostDraw();
 	void DrawSprite();
+	void DrawLesson();	// 授業用シェーダ
 	void KdPostDraw();
 
 	// アプリケーション初期化

@@ -88,6 +88,9 @@
     <Filter Include="Src\Application\GameObject\Terrain">
       <UniqueIdentifier>{708cd46d-37e0-4430-8a29-e02fe2512348}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Framework\Shader\LessonShader">
+      <UniqueIdentifier>{315e3871-d66d-4f5a-8c6b-65ba61215bd2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -273,6 +276,9 @@
     <ClInclude Include="Src\Framework\Utility\KdRandomGenerator.h">
       <Filter>Src\Framework\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Framework\Shader\LessonShader\KdLessonShader.h">
+      <Filter>Src\Framework\Shader\LessonShader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -431,6 +437,9 @@
     <ClCompile Include="Src\Framework\Utility\KdRandomGenerator.cpp">
       <Filter>Src\Framework\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Framework\Shader\LessonShader\KdLessonShader.cpp">
+      <Filter>Src\Framework\Shader\LessonShader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Framework\Shader\inc_KdCommon.hlsli">
@@ -482,6 +491,12 @@
     </FxCompile>
     <FxCompile Include="Src\Framework\Shader\StandardShader\KdStandardShader_VS_UnLit.hlsl">
       <Filter>Src\Framework\Shader\StandardShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Src\Framework\Shader\LessonShader\KdLessonShader_PS.hlsl">
+      <Filter>Src\Framework\Shader\LessonShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Src\Framework\Shader\LessonShader\KdLessonShader_VS.hlsl">
+      <Filter>Src\Framework\Shader\LessonShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

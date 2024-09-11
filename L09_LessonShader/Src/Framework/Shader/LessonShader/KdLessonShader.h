@@ -1,45 +1,45 @@
-#pragma once
+ï»¿#pragma once
 
 class KdLessonShader
 {
 public:
 
     //================================================
-    // ‰Šú‰»E‰ğ•ú
+    // åˆæœŸåŒ–ãƒ»è§£æ”¾
     //================================================
 
-    // ‰Šú‰»
+    // åˆæœŸåŒ–
     bool Init();
-    // ‰ğ•ú
+    // è§£æ”¾
     void Release();
 
-    // ƒfƒXƒgƒ‰ƒNƒ^‚Å©“®‚Å‰ğ•ú‚·‚é‚æ‚¤‚É‚·‚é
+    // ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§è‡ªå‹•ã§è§£æ”¾ã™ã‚‹ã‚ˆã†ã«ã™ã‚‹
     ~KdLessonShader() { Release(); }
 
     //================================================
-    // •`‰æ€”õ
+    // æç”»æº–å‚™
     //================================================
-    // ‰A‰e‚ğ‚Â‚¯‚éƒIƒuƒWƒFƒNƒg“™‚ğ•`‰æ‚·‚é‘OŒã‚És‚¤
-    void BeginLessonShader();
-    void EndLessonShader();
+    // é™°å½±ã‚’ã¤ã‘ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç­‰ã‚’æç”»ã™ã‚‹å‰å¾Œã«è¡Œã†
+
+	// æˆæ¥­ç”¨ã‚·ã‚§ãƒ¼ãƒ€
+    void Begin();
+    void End();
 
     //================================================
-    // •`‰æŠÖ”
+    // æç”»é–¢æ•°
     //================================================
-    // ƒƒbƒVƒ…•`‰æ
+    // ãƒ¡ãƒƒã‚·ãƒ¥æç”»
     void DrawMesh(const KdMesh* mesh, const Math::Matrix& mWorld, const std::vector<KdMaterial>& materials,
         const Math::Vector4& col, const Math::Vector3& emissive);
 
-    // ƒ‚ƒfƒ‹ƒf[ƒ^•`‰æFƒAƒjƒ[ƒVƒ‡ƒ“‚É”ñ‘Î‰
+    // ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿æç”»ï¼šã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã«éå¯¾å¿œ
     void DrawModel(const KdModelData& rModel, const Math::Matrix& mWorld = Math::Matrix::Identity,
         const Math::Color& colRate = kWhiteColor, const Math::Vector3& emissive = Math::Vector3::Zero);
 
 private:
 
-    ID3D11VertexShader* m_VS            = nullptr;  // ’¸“_ƒVƒF[ƒ_[
-    ID3D11PixelShader*  m_PS            = nullptr;  // ƒsƒNƒZƒ‹ƒVƒF[ƒ_[
+    ID3D11VertexShader* m_VS            = nullptr;  // é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
+    ID3D11PixelShader*  m_PS            = nullptr;  // ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
 
-    ID3D11InputLayout*  m_inputLayout   = nullptr;  // ’¸“_“ü—ÍƒŒƒCƒAƒEƒg
-
-    
+    ID3D11InputLayout*  m_inputLayout   = nullptr;  // é ‚ç‚¹å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
 };
