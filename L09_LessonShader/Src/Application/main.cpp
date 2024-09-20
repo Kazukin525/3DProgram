@@ -304,12 +304,11 @@ void Application::Execute()
 			PreDraw();
 
 			Draw();
+			DrawLesson(); // 授業用シェーダ
 
 			PostDraw();
 
 			DrawSprite();
-
-			DrawLesson(); // 授業用シェーダ
 		}
 		KdPostDraw();
 

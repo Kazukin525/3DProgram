@@ -18,11 +18,15 @@ void KdLessonShader::Begin()
     if (KdShaderManager::Instance().SetVertexShader(m_VS))
     {
         KdShaderManager::Instance().SetInputLayout(m_inputLayout);
+	
+		// CPUからGPUに座標情報を送る
+		KdShaderManager::Instance().SetVSConstantBuffer(1,m_cb1_Mesh.GetAddress());
     }
 
     // ピクセルシェーダーのパイプライン変更
     if (KdShaderManager::Instance().SetPixelShader(m_PS))
     {
+		KdShaderManager::Instance().SetPSConstantBuffer(2, m_cb2_Material.GetAddress());
     }
 }
 
@@ -54,8 +58,7 @@ bool KdLessonShader::Init()
         std::vector<D3D11_INPUT_ELEMENT_DESC> layout = {
             { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,   0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
             { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,	    0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,   0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "COLOR",    0, DXGI_FORMAT_R8G8B8A8_UNORM,    0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+            { "COLOR",    0, DXGI_FORMAT_R8G8B8A8_UNORM,    0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         };
 
         // 頂点入力レイアウト作成
@@ -86,6 +89,14 @@ bool KdLessonShader::Init()
         }
     }
 
+	//-------------------------------------
+	// 定数バッファ
+	//-------------------------------------
+
+	m_cb1_Mesh.Create();
+	m_cb2_Material.Create();
+
+
     return true;
 }
 
@@ -94,6 +105,10 @@ void KdLessonShader::Release()
     KdSafeRelease(m_VS);
     KdSafeRelease(m_PS);
     KdSafeRelease(m_inputLayout);
+	
+	// メモリリークしちゃう
+	m_cb1_Mesh.Release();
+	m_cb2_Material.Release();
 }
 
 void KdLessonShader::DrawMesh(const KdMesh* mesh, const Math::Matrix& mWorld, const std::vector<KdMaterial>& materials,
@@ -104,11 +119,19 @@ void KdLessonShader::DrawMesh(const KdMesh* mesh, const Math::Matrix& mWorld, co
     // メッシュの頂点情報転送
     mesh->SetToDevice();
 
+	// 3Dワールド行列転送
+	m_cb1_Mesh.Work().mW = mWorld;	// mWorldが私たちが指定している座標
+	m_cb1_Mesh.Write();
+
     // 全サブセット
     for (UINT subi = 0; subi < mesh->GetSubsets().size(); subi++)
     {
         // 面が１枚も無い場合はスキップ
         if (mesh->GetSubsets()[subi].FaceCount == 0)continue;
+
+		// マテリアルデータの転送
+		const KdMaterial& material = materials[mesh->GetSubsets()[subi].MaterialNo];
+		WriteMaterial(material, col, emissive);
 
         //-----------------------
         // サブセット描画
@@ -129,4 +152,38 @@ void KdLessonShader::DrawModel(const KdModelData& rModel, const Math::Matrix& mW
         DrawMesh(dataNodes[nodeIdx].m_spMesh.get(), dataNodes[nodeIdx].m_worldTransform * mWorld,
             rModel.GetMaterials(), colRate, emissive);
     }
+}
+
+
+// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
+// 描画用マテリアル情報の転送
+// ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+// それぞれのマテリアルの影響倍率値とテクスチャを設定
+// BaseColor：基本色 / Emissive：自己発光色 / Metalic：金属性(テカテカ) / Roughness：粗さ(材質の色の反映度)
+// テクスチャは法線マップ以外は未設定なら白1ピクセルのシステムテクスチャを指定
+// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
+void KdLessonShader::WriteMaterial(	const KdMaterial& material, const Math::Vector4& colRate,
+									const Math::Vector3& emiRate)
+{
+	//-----------------------
+	// マテリアル情報を定数バッファへ書き込む
+	//-----------------------
+	m_cb2_Material.Work().BaseColor = material.m_baseColorRate * colRate;
+	m_cb2_Material.Work().Emissive = material.m_emissiveRate * emiRate;
+	m_cb2_Material.Work().Metallic = material.m_metallicRate;
+	m_cb2_Material.Work().Roughness = material.m_roughnessRate;
+	m_cb2_Material.Write();
+
+	//-----------------------
+	// テクスチャセット
+	//-----------------------
+	ID3D11ShaderResourceView* srvs[4];
+
+	srvs[0] = material.m_baseColorTex ? material.m_baseColorTex->WorkSRView() : KdDirect3D::Instance().GetWhiteTex()->WorkSRView();
+	srvs[1] = material.m_metallicRoughnessTex ? material.m_metallicRoughnessTex->WorkSRView() : KdDirect3D::Instance().GetWhiteTex()->WorkSRView();
+	srvs[2] = material.m_emissiveTex ? material.m_emissiveTex->WorkSRView() : KdDirect3D::Instance().GetWhiteTex()->WorkSRView();
+	srvs[3] = material.m_normalTex ? material.m_normalTex->WorkSRView() : KdDirect3D::Instance().GetNormalTex()->WorkSRView();
+
+	// セット
+	KdDirect3D::Instance().WorkDevContext()->PSSetShaderResources(0, _countof(srvs), srvs);
 }

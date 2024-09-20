@@ -3,6 +3,27 @@
 class KdLessonShader
 {
 public:
+	// 定数バッファ（メッシュ単位更新）
+	struct cbMesh
+	{
+		Math::Matrix mW;
+	};
+
+	// 定数バッファ（マテリアル単位更新)
+	// ファディング
+	// ここでの引き渡しの際には、16のバイト毎の倍数でなくてはならない
+	struct cbMaterial
+	{
+		Math::Vector4	BaseColor	= { 1.0f,1.0f,1.0f,1.0f };
+		Math::Vector3	Emissive	= { 1.0f,1.0f,1.0f };
+
+		float			Metallic	= 0.0f;
+
+		float			Roughness	= 1.0f;
+		float			_blank[3]	= {0.0f,0.0f,0.0f};
+	};
+
+public:
 
     //================================================
     // 初期化・解放
@@ -37,9 +58,16 @@ public:
         const Math::Color& colRate = kWhiteColor, const Math::Vector3& emissive = Math::Vector3::Zero);
 
 private:
+	// マテリアルのセット
+	void WriteMaterial(	const KdMaterial& material,const Math::Vector4& colRate,
+						const Math::Vector3& emiRate);
 
     ID3D11VertexShader* m_VS            = nullptr;  // 頂点シェーダー
     ID3D11PixelShader*  m_PS            = nullptr;  // ピクセルシェーダー
 
     ID3D11InputLayout*  m_inputLayout   = nullptr;  // 頂点入力レイアウト
+
+	// 定数バッファ
+	KdConstantBuffer<cbMesh>		m_cb1_Mesh;			// メッシュ毎に更新
+	KdConstantBuffer<cbMaterial>	m_cb2_Material;		// マテリアル毎に更新
 };

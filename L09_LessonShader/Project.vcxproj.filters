@@ -454,6 +454,9 @@
     <None Include="Src\Framework\Shader\StandardShader\inc_KdStandardShader.hlsli">
       <Filter>Src\Framework\Shader\StandardShader</Filter>
     </None>
+    <None Include="Src\Framework\Shader\LessonShader\inc_KdLessonShader.hlsli">
+      <Filter>Src\Framework\Shader\LessonShader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Src\Framework\Shader\SpriteShader\KdSpriteShader_PS.hlsl">
