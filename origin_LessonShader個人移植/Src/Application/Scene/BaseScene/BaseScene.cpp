@@ -121,14 +121,14 @@ void BaseScene::DrawLesson()
 {
 	// ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
 	// 授業用シェーダ
-	KdShaderManager::Instance().m_LessonShader.Begin();
+	KdShaderManager::Instance().m_LessonShader.BeginLit();
 	{
 		for (auto& obj : m_objList)
 		{
 			obj->DrawLesson();
 		}
 	}
-	KdShaderManager::Instance().m_LessonShader.End();
+	KdShaderManager::Instance().m_LessonShader.EndLit();
 }
 
 void BaseScene::DrawDebug()
