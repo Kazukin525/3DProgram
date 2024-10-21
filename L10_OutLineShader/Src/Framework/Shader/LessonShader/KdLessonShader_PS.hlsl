@@ -45,7 +45,7 @@ float4 main(VSOutput In) : SV_Target0
 	}
 
 	// カメラへの方向
-		float3 vCam = g_CamPos - In.wPos;
+	float3 vCam = g_CamPos - In.wPos;
 	float camDist = length(vCam); // カメラ - ピクセル距離
 	vCam = normalize(vCam);
 
